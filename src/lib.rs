@@ -20,9 +20,33 @@ impl Operation {
     }
 }
 
+#[derive(Copy, Clone)]
 pub enum Num {
     Int(i64),
     Float(f64),
+}
+
+impl Num {
+    pub fn print(&self) -> String {
+        match self {
+            Self::Int(num) => format!("{num}"),
+            Self::Float(num) => format!("{num}"),
+        }
+    }
+
+    pub fn insert_digit(self, digit: u8) -> Self {
+        match self {
+            Self::Int(num) =>{
+                if num < i64::MAX / 10 {
+                    Self::Int(num * 10 + digit as i64)
+                }
+                else {
+                    self
+                }
+            }
+            Self::Float(_) => todo!(),
+        }
+    }
 }
 
 pub enum Action {
@@ -32,12 +56,6 @@ pub enum Action {
     DeleteDigit,
     AddDigit(u8),
     AddOperation(Operation),
-}
-
-pub struct State {
-    pub current_operand: Num,
-    pub operation: Option<Operation>,
-    pub previous_operand: Option<Num>,
 }
 
 #[derive(Properties, PartialEq, Clone)]
